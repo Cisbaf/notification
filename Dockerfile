@@ -13,8 +13,5 @@ RUN go mod download
 # Compila a aplicação Go
 RUN go build -o main .
 
-# Expõe a porta que a aplicação vai usar
-EXPOSE 8080
-
 # Comando para rodar a aplicação
 CMD ["./main"]

@@ -4,7 +4,6 @@ import (
 	"whatsappbot/src/wpp"
 
 	"github.com/gin-gonic/gin"
-	"go.mau.fi/whatsmeow/types"
 )
 
 type NotificationRequest struct {
@@ -26,21 +25,12 @@ func NotificationRoute(ctx *gin.Context) {
 		return
 	}
 
-	err = wpp.SendMessage(wpp.Notification{
-		Number: func() string {
-			if notificationRequest.IsGroup {
-				return wpp.GetGroup(notificationRequest.To)
-			}
-			return notificationRequest.To
-		}(),
-		Message: notificationRequest.Message,
-		Server: func() string {
-			if notificationRequest.IsGroup {
-				return types.GroupServer
-			}
-			return types.DefaultUserServer
-		}(),
-	})
+	ntf := wpp.MakeNotification(
+		notificationRequest.To,
+		notificationRequest.Message,
+		notificationRequest.IsGroup,
+	)
+	err = wpp.SendMessage(ntf)
 
 	if err != nil {
 		ctx.JSON(400, gin.H{
