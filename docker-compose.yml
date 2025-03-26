@@ -1,7 +1,7 @@
-version: "3.8"
-
+# docker compose notification app
 services:
-  app:
+  notification:
+    container_name: notification-go
     build: .
     ports:
       - "${NOTIFICATION}:8080"
@@ -9,3 +9,9 @@ services:
       - .:/app
     command: go run main.go
     restart: always
+    networks:
+      - cisbaf_network_apps
+
+networks:
+  cisbaf_network_apps:
+    external: true
