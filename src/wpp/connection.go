@@ -24,11 +24,11 @@ func RunClient(ctx context.Context, wg *sync.WaitGroup) {
 			return
 		default:
 			dbLog := waLog.Stdout("Database", "DEBUG", true)
-			container, err := sqlstore.New("sqlite3", "file:./database.db?_foreign_keys=on", dbLog)
+			container, err := sqlstore.New(context.Background(), "sqlite3", "file:./database.db?_foreign_keys=on", dbLog)
 			if err != nil {
 				panic(err)
 			}
-			deviceStore, err := container.GetFirstDevice()
+			deviceStore, err := container.GetFirstDevice(context.Background())
 			if err != nil {
 				panic(err)
 			}
